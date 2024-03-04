@@ -7,8 +7,22 @@ MANIM=manim
 # Manim flags.
 FLAGS=-v WARNING
 
-all:
+all: datetopi circlepi circle2pi archemidespi binomialpi newtonpi
+
+datetopi:
 	$(MANIM) $(QUALITY) $(FLAGS) main.py DateToPI
+
+circlepi:
 	$(MANIM) $(QUALITY) $(FLAGS) main.py CirclePI
+	
+circle2pi:
+	$(MANIM) $(QUALITY) $(FLAGS) main.py Circle2PI
+	
+archemidespi:
 	$(MANIM) $(QUALITY) $(FLAGS) main.py ArchimedesPI
-#	$(MANIM) $(QUALITY) $(FLAGS) main.py NewtonPI
+	
+binomialpi:
+	$(MANIM) $(QUALITY) $(FLAGS) main.py BinomialPI
+	
+newtonpi:
+	$(MANIM) $(QUALITY) $(FLAGS) main.py NewtonPI
