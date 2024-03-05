@@ -1060,7 +1060,7 @@ class NewtonPI(mn.Scene):
             self.play(
                 mn.TransformMatchingTex(g, gg,
                 transform_mismatches=False),
-                run_time=0.5)
+                run_time=0.25)
             g = gg
             self.wait(1)
         
@@ -1331,7 +1331,7 @@ class NewtonPI(mn.Scene):
             "\\approx", f"{(12*gSn(n)-d):.5f}"
         ).next_to(divider, mn.DOWN).to_edge(mn.LEFT)
         
-        for n in range(1, 21):
+        for n in range(1, 8):
             gg = mn.MathTex(
                 "N", "=", f"{n}", ":",
                 "\\;", "\\pi",
@@ -1340,7 +1340,7 @@ class NewtonPI(mn.Scene):
             self.play(
                 mn.TransformMatchingTex(g, gg,
                 transform_mismatches=False),
-                run_time=0.5)
+                run_time=0.25)
             g = gg
             self.wait(1)
         
