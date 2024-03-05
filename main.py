@@ -1,12 +1,7 @@
-from os import replace
-from pdb import run
-import re
-from typing import Text
 import manim as mn
 import numpy as np
-import math
 
-PITEX = "$\pi$" # type: ignore
+PITEX = "$\\pi$"
 PIDIGITS = "31415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446095505822317253594081284811174502841027019385211055596446229489549303819644288109756659334461284756482337863849961244352961"
 
 class DateToPI(mn.Scene):
@@ -20,8 +15,8 @@ class DateToPI(mn.Scene):
         date = mn.Text(d, font_size=fs)
         date2 = mn.Text(d[:5], font_size=fs)
         three14 = mn.Tex(f"${t14}$", font_size=fs)
-        pi = mn.Tex(f"${ds}\ldots$", font_size=fs) # type: ignore
-        equal = mn.Tex("=", font_size=fs)
+        pi = mn.Tex(f"${ds}\\ldots$", font_size=fs)
+        eq = mn.Tex("=", font_size=fs)
         pitex = mn.Tex(PITEX, font_size=fs)
         
         self.play(mn.Write(date))
@@ -45,15 +40,15 @@ class DateToPI(mn.Scene):
         self.play(mn.Write(pi))
         self.wait(1)
 
-        equal.scale(s)
-        equal.next_to(three14, mn.LEFT)
+        eq.scale(s)
+        eq.next_to(three14, mn.LEFT)
         pitex.scale(s)
-        pitex.next_to(equal, mn.LEFT)
+        pitex.next_to(eq, mn.LEFT)
         self.play(mn.Write(pitex))
-        self.play(mn.Write(equal))
+        self.play(mn.Write(eq))
         self.wait(1)
         
-        self.play(mn.FadeOut(three14, pi, equal))
+        self.play(mn.FadeOut(three14, pi, eq))
         self.wait(1)
         
         pitex.generate_target()
