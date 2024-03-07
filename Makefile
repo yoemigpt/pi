@@ -7,7 +7,19 @@ MANIM=manim
 # Manim flags.
 FLAGS=-v WARNING
 
-all: datetopi circlepi circle2pi archemidespi binomialpi newtonpi
+all: intro circum greek
+
+intro:
+	$(MANIM) $(QUALITY) $(FLAGS) intro.py ArabicFirst
+	$(MANIM) $(QUALITY) $(FLAGS) intro.py ArabicSecond
+
+circum:
+	$(MANIM) $(QUALITY) $(FLAGS) circum.py Circumference
+
+greek:
+#	$(MANIM) $(QUALITY) $(FLAGS) greek.py GreekPolygon
+#	$(MANIM) $(QUALITY) $(FLAGS) greek.py GreekPolygonExample
+	$(MANIM) $(QUALITY) $(FLAGS) greek.py GreekPolygonBounds
 
 datetopi:
 	$(MANIM) $(QUALITY) $(FLAGS) main.py DateToPI
