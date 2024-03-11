@@ -22,30 +22,38 @@ partex = """
 \\item محيط الدائرة أصغر من محيط الشكل الخارجي
 \\end{itemize}
 """
+def inscribed(circ, n):
+    points = []
+    for i in range(n):
+        p = circ.point_at_angle(mn.TAU * i / n)
+        points.append(p)
+    return mn.Polygon(*points)
 
-def reverse_mobjects(mobj):
-    # reverse the order of the mobjects
-    # recursively reverse the submobjects
-    for mob in mobj.submobjects:
-        if len(mob) > 0:
-            reverse_mobjects(mob)
-    mobj.submobjects = list(reversed(mobj.submobjects))
-
+def subscribed(circ, n):
+    points = []
+    c = circ.get_center()
+    r = circ.radius
+    a = r / (np.cos(mn.TAU / (2*n)))
+    for i in range(n):
+        p = circ.point_at_angle(mn.TAU * i / n)
+        points.append((p-c) * a / r + c)
+    return mn.Polygon(*points)
 
 class GreekPolygon(mn.Scene):
     def construct(self):
-        method = mn.Tex(
+        title = mn.Tex(
             "طريقة أرخميدس",
             font_size=60,
             tex_template=tex_template_ar
         )
-        reverse_mobjects(method)
-        self.play(mn.Write(method), run_time=3)
+        mobjs = title.submobjects[0].submobjects
+        title.submobjects[0].submobjects = mobjs[::-1]
+        self.play(mn.Write(title), run_time=3)
         self.wait(1)
-        method.generate_target()
-        method.target.to_edge(mn.UR) # type: ignore
-        method.target.scale(0.5) # type: ignore
-        self.play(mn.MoveToTarget(method), run_time=2)
+        title.generate_target()
+        title.target.to_edge(mn.UR) # type: ignore
+        title.target.scale(0.5) # type: ignore
+        self.play(mn.MoveToTarget(title), run_time=2)
         self.wait(2)
         
         r = 2
@@ -53,27 +61,9 @@ class GreekPolygon(mn.Scene):
         self.play(mn.Create(circ), run_time=2)
         self.wait(2)
         self.play(
-            circ.animate.shift(mn.LEFT * 2),
-            run_time=0.5)
-        
-        def inscribed(circ, n):
-            points = []
-            for i in range(n):
-                p = circ.point_at_angle(mn.TAU * i / n)
-                points.append(p)
-            return points, mn.Polygon(*points)
-        
-        def subscribed(circ, n):
-            points = []
-            c = circ.get_center()
-            r = circ.radius
-            a = r / (np.cos(mn.TAU / (2*n)))
-            for i in range(n):
-                p = circ.point_at_angle(mn.TAU * i / n)
-                points.append((p-c) * a / r + c)
-            return points, mn.Polygon(*points)
-
-
+            circ.animate.shift(mn.LEFT * 3),
+            run_time=1)
+        self.wait(0.5)
 
         nc = "عدد الأضلاع: " 
         label = mn.Tex(
@@ -83,6 +73,8 @@ class GreekPolygon(mn.Scene):
         )
         label.to_edge(mn.UP)
         label.align_to(circ, mn.RIGHT)
+        mobjs = label.submobjects[0].submobjects
+        label.submobjects[0].submobjects = mobjs[::-1]
         self.play(mn.Write(label), run_time=0.5)
         nk = 3
         for k in range(0, nk):
@@ -90,9 +82,9 @@ class GreekPolygon(mn.Scene):
                 n = 4
             else:
                 n = 3 * (2**k)
-            _, ins = inscribed(circ, n)
+            ins = inscribed(circ, n)
             ins.set_color(mn.BLUE)
-            _, sub = subscribed(circ, n)
+            sub = subscribed(circ, n)
             sub.set_color(mn.GREEN)
             label2 = mn.Tex(
                 nc,
@@ -105,6 +97,10 @@ class GreekPolygon(mn.Scene):
             self.play(
                 mn.TransformMatchingShapes(
                     label, label2, path_arc=0),
+                run_time=1,
+            )
+            self.wait(0.5)
+            self.play(
                 mn.Create(ins),
                 mn.Create(sub),
                 run_time=2
@@ -131,7 +127,18 @@ class GreekPolygon(mn.Scene):
                 )
                 self.wait(1)
         
-        self.wait(2)
+        self.wait(4)
+        self.play(
+            mn.Uncreate(ins),
+            mn.Uncreate(sub),
+            mn.Uncreate(circ),
+            mn.Unwrite(label),
+            mn.Unwrite(par),
+            run_time=1)
+        self.wait(0.5)
+        self.play(mn.FadeOut(title), run_time=0.5)
+        self.wait(0.5)
+            
         
 class GreekPolygonExample(mn.Scene):
     def construct(self):
@@ -194,15 +201,8 @@ class GreekPolygonExample(mn.Scene):
         )
         self.play(mn.Write(text1), run_time=1)
         self.wait(0.5)
-        
-        def inscribed(circ, n):
-            points = []
-            for i in range(n):
-                p = circ.point_at_angle(mn.TAU * i / n)
-                points.append(p)
-            return points, mn.Polygon(*points)
-        
-        _, polygon = inscribed(circ, 4)
+ 
+        polygon = inscribed(circ, 4)
         polygon.set_color(mn.BLUE)
         self.play(mn.Create(polygon), run_time=1)
         
@@ -330,18 +330,8 @@ class GreekPolygonExample(mn.Scene):
             eq5.animate.to_edge(mn.RIGHT),
             run_time=1
         )
-        
-        def subscribed(circ, n):
-            points = []
-            c = circ.get_center()
-            r = circ.radius
-            a = r / (np.cos(mn.TAU / (2*n)))
-            for i in range(n):
-                p = circ.point_at_angle(mn.TAU * i / n)
-                points.append((p-c) * a / r + c)
-            return points, mn.Polygon(*points)
-    
-        _, polygon = subscribed(circ, 4)
+
+        polygon = subscribed(circ, 4)
         polygon.set_color(mn.GREEN)
         self.play(mn.Create(polygon), run_time=1)
         self.wait(0.5)
@@ -459,7 +449,15 @@ class GreekPolygonExample(mn.Scene):
         )
         
         self.wait(2)
-        
+        self.play(
+            mn.Unwrite(label1),
+            mn.Uncreate(eq),
+            run_time=1
+        )
+        self.wait(0.5)
+        self.play(mn.FadeOut(title), run_time=0.5)
+        self.wait(0.5)
+    
 class GreekPolygonBounds(mn.Scene):
     def construct(self):
         title = mn.Tex(
@@ -497,23 +495,6 @@ class GreekPolygonBounds(mn.Scene):
             96: "96\\left(\\frac{\\sqrt{2-\\sqrt{2+\\sqrt{2+\\sqrt{2+\\sqrt{3}}}}}}{\\sqrt{2+\\sqrt{2+\\sqrt{2+\\sqrt{2+\\sqrt{3}}}}}}\\right)"
         }
         
-        def inscribed(circ, n):
-            points = []
-            for i in range(n):
-                p = circ.point_at_angle(mn.TAU * i / n)
-                points.append(p)
-            return mn.Polygon(*points)
-        
-        def subscribed(circ, n):
-            points = []
-            c = circ.get_center()
-            r = circ.radius
-            a = r / (np.cos(mn.TAU / (2*n)))
-            for i in range(n):
-                p = circ.point_at_angle(mn.TAU * i / n)
-                points.append((p-c) * a / r + c)
-            return mn.Polygon(*points)
-        
         mid = mn.MathTex(
             "\\le",
             "\\pi",
@@ -538,7 +519,7 @@ class GreekPolygonBounds(mn.Scene):
         label.to_edge(mn.UP)
         mobjs = label.submobjects[0].submobjects
         label.submobjects[0].submobjects = mobjs[::-1]
-        self.play(mn.Write(label), run_time=0.5)
+        self.play(mn.Write(label), run_time=1)
         
         label1 = mn.Tex(
             "",
@@ -579,7 +560,7 @@ class GreekPolygonBounds(mn.Scene):
                 mn.TransformMatchingShapes(
                     up1, up2
                 ),
-                run_time=1
+                run_time=2
             )
             low1 = low2
             up1 = up2
@@ -607,5 +588,43 @@ class GreekPolygonBounds(mn.Scene):
             ),
             run_time=1
         )
-        self.wait(6)
+        self.wait(1)
+        
+        low1 = low2
+        up1 = up2
+        
+        low2 = low2.copy()
+        up2 = up2.copy()
+        
+        mobjsl = low2.submobjects[0].submobjects
+        mobjsu = up2.submobjects[0].submobjects
+        for i in range(4):
+            mobjsl[i].set_color(mn.RED)
+            mobjsu[i].set_color(mn.RED)
+        
+        low2.submobjects[0].submobjects = mobjsl
+        up2.submobjects[0].submobjects = mobjsu
+        
+        self.play(
+            mn.TransformMatchingShapes(
+                low1, low2
+            ),
+            mn.TransformMatchingShapes(
+                up1, up2
+            ),
+            run_time=1
+        )
+        self.wait(4)
+        
+        self.play(
+            mn.Unwrite(label),
+            mn.Unwrite(mid),
+            mn.Unwrite(low2),
+            mn.Unwrite(up2),
+            mn.Unwrite(label1),
+            run_time=1
+        )
+        self.wait(0.5)
+        self.play(mn.FadeOut(title), run_time=0.5)
+        self.wait(0.5)
         

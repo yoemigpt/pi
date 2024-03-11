@@ -1,5 +1,5 @@
 # Quality of the video.
-QUALITY=-qm
+QUALITY=-qh
 
 # Manim command.
 MANIM=manim
@@ -7,34 +7,37 @@ MANIM=manim
 # Manim flags.
 FLAGS=-v WARNING
 
-all: intro circum greek
+all: intro circum greek area binom newton pianimation history final
 
 intro:
 	$(MANIM) $(QUALITY) $(FLAGS) intro.py ArabicFirst
 	$(MANIM) $(QUALITY) $(FLAGS) intro.py ArabicSecond
+	$(MANIM) $(QUALITY) $(FLAGS) intro.py ArabicIntro
 
 circum:
 	$(MANIM) $(QUALITY) $(FLAGS) circum.py Circumference
 
+area:
+	$(MANIM) $(QUALITY) $(FLAGS) area.py Area
+
 greek:
-#	$(MANIM) $(QUALITY) $(FLAGS) greek.py GreekPolygon
-#	$(MANIM) $(QUALITY) $(FLAGS) greek.py GreekPolygonExample
+	$(MANIM) $(QUALITY) $(FLAGS) greek.py GreekPolygon
+	$(MANIM) $(QUALITY) $(FLAGS) greek.py GreekPolygonExample
 	$(MANIM) $(QUALITY) $(FLAGS) greek.py GreekPolygonBounds
 
-datetopi:
-	$(MANIM) $(QUALITY) $(FLAGS) main.py DateToPI
+binom:
+	$(MANIM) $(QUALITY) $(FLAGS) binom.py BinomialEquation
 
-circlepi:
-	$(MANIM) $(QUALITY) $(FLAGS) main.py CirclePI
-	
-circle2pi:
-	$(MANIM) $(QUALITY) $(FLAGS) main.py Circle2PI
-	
-archemidespi:
-	$(MANIM) $(QUALITY) $(FLAGS) main.py ArchimedesPI
-	
-binomialpi:
-	$(MANIM) $(QUALITY) $(FLAGS) main.py BinomialPI
-	
-newtonpi:
-	$(MANIM) $(QUALITY) $(FLAGS) main.py NewtonPI
+newton:
+	$(MANIM) $(QUALITY) $(FLAGS) newton.py Integral
+	$(MANIM) $(QUALITY) $(FLAGS) newton.py Newton
+
+pianimation:
+	$(MANIM) $(QUALITY) $(FLAGS) today.py PIAnimation
+
+history:
+	$(MANIM) $(QUALITY) $(FLAGS) history.py History1
+	$(MANIM) $(QUALITY) $(FLAGS) history.py History2
+
+final:
+	$(MANIM) $(QUALITY) $(FLAGS) final.py ArabicFinal

@@ -82,7 +82,6 @@ class Circumference(mn.Scene):
                 bars[i].get_end(),
                 bars[i+1].get_end(),
                 buff=0,
-                # stroke_width=1,
                 tip_length=0.15
             )
             label = mn.Tex(
@@ -140,9 +139,10 @@ class Circumference(mn.Scene):
         
         ta = t.animate.set_value(mn.TAU)
         self.play(ta, run_time=3)
+        self.wait(0.5)
+        
         line.clear_updaters()
         arc.clear_updaters()
-        self.wait(0.5)
         
         b = line.get_end()
         bar = mn.Line(
@@ -185,3 +185,16 @@ class Circumference(mn.Scene):
         eq.to_edge(mn.UP)
         self.play(mn.Write(eq), run_time=5)
         self.wait(3)
+        
+        self.play(
+            mn.Uncreate(bar),
+            mn.Uncreate(arrow),
+            mn.Uncreate(label),
+            mn.Uncreate(bars),
+            mn.Uncreate(arrows),
+            mn.Uncreate(labels),
+            mn.Uncreate(line),
+            mn.Unwrite(eq),
+            run_time=1)
+        self.play(mn.FadeOut(title), run_time=0.5)
+        self.wait(0.5)
