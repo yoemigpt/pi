@@ -32,7 +32,7 @@ class ArabicFinal(mn.Scene):
         )
         
         script = mn.Tex(
-            "الكتابة والتحقيق",
+            "الكتابة والتدقيق",
             font_size=32,
             tex_template=tex_template_ar
         )
