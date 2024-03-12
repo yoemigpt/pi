@@ -246,7 +246,7 @@ class History1(mn.Scene):
         self.wait(3)
         
         text4 = mn.Tex(
-            "توصلنا لمعرفة اكثر من الف رقم بعد العلامة العشرية",
+            "توصلنا لمعرفة أكثر من ألف رقم بعد العلامة العشرية",
             tex_template=tex_template_ar
         )
         mobjs = text4.submobjects[0].submobjects
@@ -289,4 +289,97 @@ class History2(mn.Scene):
         self.play(mn.FadeOut(img3), run_time=1)
         self.wait(1)
         
+class History3(mn.Scene):
+    def construct(self):
+        img1 = mn.ImageMobject(
+            "assets/images/links-pi.jpeg")
         
+        img1.scale(0.5)
+        self.play(mn.FadeIn(img1), run_time=3)
+        self.wait(2)
+        self.play(mn.FadeOut(img1), run_time=1)
+        
+        eq1 = mn.MathTex(
+            "\\left(\\nabla^2 - \\frac{1}{c^2} \\frac{\\partial^2}{\\partial t^2}\\right)\\vec{E} = 0",
+            font_size=72,
+        )
+        
+        self.play(mn.Write(eq1), run_time=2)
+        
+        # Scroll to the right
+        eq1.generate_target()
+        eq1.target.scale(0.5) # type: ignore
+        eq1.target.shift(16 * mn.RIGHT) # type: ignore
+        
+        eq2 = mn.MathTex(
+            "\\vec{E} = \\vec{E}_0 e^{i(kx - \\omega t)} \\quad \\implies \\quad \\omega = kc = 2\\pi f",
+            font_size=72,
+        )
+        eq2.submobjects[0].submobjects[-2].set_color(mn.RED)
+
+        eq2.generate_target()
+        eq2.target.move_to(mn.ORIGIN) # type: ignore
+
+        eq2.shift(30*mn.LEFT)
+        self.play(
+            mn.MoveToTarget(eq1),
+            mn.AnimationGroup(
+                mn.FadeIn(eq2),
+                mn.MoveToTarget(eq2),
+                lag_ratio=1.0
+            ),
+            run_time=3)
+        self.wait(1)
+        self.play(
+            mn.Unwrite(eq2),
+            run_time=1)
+        
+        img2 = mn.ImageMobject(
+            "assets/images/solar.png")
+        
+        self.play(mn.GrowFromCenter(img2), run_time=3)
+        self.wait(1)
+        self.play(mn.FadeOut(img2), run_time=2)
+        self.wait(1)
+
+        
+class History4(mn.Scene):
+    def construct(self):
+        group = mn.VGroup()
+        square = mn.Square()
+        circ = mn.Circle()
+        polygon = mn.RegularPolygon(6)
+        group.add(square, circ, polygon)
+        
+        group.arrange(mn.RIGHT)
+        
+        group.move_to(mn.ORIGIN)
+        self.play(mn.Create(group), run_time=1)
+        self.wait(2)
+        
+        integral = mn.MathTex(
+            "\\int",
+            font_size=72,
+        )
+        
+        diff = mn.MathTex(
+            "\\frac{d}{dx}",
+            font_size=72,
+        )
+        
+        suminf = mn.MathTex(
+            "\\sum_{n=1}^{\\infty}",
+            font_size=72,
+        )
+        
+        group2 = mn.VGroup(integral, diff, suminf)
+        group2.arrange_in_grid(1, 3, buff=1)
+        
+        group2.move_to(mn.ORIGIN)
+        
+        self.play(
+            mn.FadeOut(group),
+            mn.Create(group2),
+            run_time=2)
+        self.wait(1)
+        self.play(mn.FadeOut(group2), run_time=1)

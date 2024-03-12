@@ -42,7 +42,7 @@ class ArabicFinal(mn.Scene):
             "\\\\",
             "يوسف أمين",
             "\\\\",
-            "مختار باب حمدي",
+            "المختار باب حمدي",
             font_size=40,
             tex_template=tex_template_ar
         )

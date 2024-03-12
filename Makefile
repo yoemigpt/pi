@@ -37,7 +37,8 @@ pianimation:
 
 history:
 	$(MANIM) $(QUALITY) $(FLAGS) history.py History1
-	$(MANIM) $(QUALITY) $(FLAGS) history.py History2
+	$(MANIM) $(QUALITY) $(FLAGS) history.py History3
+	$(MANIM) $(QUALITY) $(FLAGS) history.py History4
 
 final:
 	$(MANIM) $(QUALITY) $(FLAGS) final.py ArabicFinal
